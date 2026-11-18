@@ -264,6 +264,15 @@ button{font:inherit;color:inherit}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+.info{max-width:780px}
+.info-k{font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
+.info-list{display:grid;gap:12px;margin:0 0 20px}
+.info-item{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 18px}
+.info-item b{display:block;font-family:var(--f-display);font-size:1.05rem;margin-bottom:4px}
+.info-item p{margin:0}
+.info-note{background:var(--a2);color:var(--a2t);border-radius:16px;padding:16px 18px;margin:0 0 24px}
+.info-note b{display:block;font-size:1.1rem;margin-bottom:4px}
+.info-note p{margin:0}
 </style>
 </head>
 <body>
@@ -285,6 +294,10 @@ button{font:inherit;color:inherit}
 var IMG_BIRD='assets/bird.jpg';
 var IMG_QR='';  /* Ruta de la imagen del QR para la pantalla final, por ejemplo 'assets/qr.png'. Vacío = muestra el recuadro reservado. */
 
+/* ---------- Piezas informativas (no suman puntos) ---------- */
+var INFO_CONCEPTOS={"title": "Antes de clasificar: conceptos clave", "items": [["Peligro", "Es una fuente o situación con potencial de daño en términos de lesión o enfermedad, daño a la propiedad, al ambiente de trabajo o una combinación de estos."], ["Riesgo", "Combinación de la probabilidad de que ocurra un evento o exposición peligrosa."], ["Acto inseguro", "Acciones y decisiones humanas que pueden causar una situación insegura o incidente, con consecuencias para el trabajador, la producción, el medio ambiente y otras personas. También el comportamiento inseguro incluye la falta de acciones para informar o corregir condiciones inseguras."], ["Condición insegura", "Es todo elemento de los equipos, la materia prima, las herramientas, las máquinas, las instalaciones o el medio ambiente que se convierte en un peligro para las personas, los bienes, la operación y el medio ambiente, y que bajo determinadas condiciones puede generar un incidente."], ["Accidente de trabajo", "Suceso repentino que sobrevenga por causa o con ocasión del trabajo, y que produzca en el trabajador una lesión orgánica, una perturbación funcional o psiquiátrica, una invalidez o la muerte."], ["Incidente de trabajo", "Suceso acaecido en el curso del trabajo o en relación con este, que tuvo el potencial de ser un accidente, en el que hubo personas involucradas sin que sufrieran lesiones o se presentaran daños a la propiedad y/o pérdida en los procesos."]], "note": ["Línea de ARL Sura para el reporte de accidentes de trabajo: 604 444 4578", "Reporta inmediatamente cualquier accidente de trabajo a tu jefe inmediato y al equipo de Seguridad y Salud en el Trabajo. Recuerda que existe un plazo máximo de dos (2) días hábiles para efectuar el reporte ante la ARL SURA."]};
+var INFO_VOZ={"title": "Cuidemos nuestra voz", "items": [["", "Calienta la voz."], ["", "Evita hablar por encima del ruido ambiental."], ["", "Evita ingerir bebidas muy calientes o muy frías."], ["", "Utiliza la regla 60/10: por cada 60 minutos de charla, 10 minutos de silencio."], ["", "Evita fumar y el alto consumo de cafeína. Incluye dentro de tu alimentación frutas y verduras."], ["", "Mantente hidratado."]]};
+var INFO_COMITES={"title": "Antes de los comités: definiciones", "items": [["COPASST", "El Comité Paritario de Seguridad y Salud en el Trabajo es un organismo de promoción y vigilancia de las normas y reglamentos de seguridad y salud dentro de la empresa."], ["Comité de Convivencia Laboral", "Es una instancia preventiva de acoso laboral, independiente en su funcionamiento, que contribuye a proteger a los trabajadores contra los riesgos psicosociales que afectan la salud en los lugares de trabajo. Su rol es preventivo, orientador, conciliador y canalizador; por lo anterior, el comité no determina si hay acoso laboral."], ["Acoso laboral", "Conducta persistente y demostrable, ejercida sobre un empleado o trabajador por parte de un empleador, un jefe o superior jerárquico inmediato, un compañero de trabajo o un subalterno, encaminada a infundir miedo, intimidación, terror y angustia, a causar perjuicio laboral, generar desmotivación en el trabajo o inducir la renuncia del mismo."]]};
 /* ---------- Contenido (tomado de la inducción SG-SST) ---------- */
 var ROUNDS=[
  {name:'Calentamiento',tema:'SG-SST y compromiso',blurb:'Tres retos para entrar en calor.',mech:'Elige, completa y ordena',repaso:'El sistema de gestión y la política de SST',ch:[
@@ -297,23 +310,19 @@ var ROUNDS=[
   {type:'match',t:50,q:'Une cada factor de riesgo con su ejemplo. Toca uno de cada lado.',pairs:[['Locativo','Pisos húmedos y desniveles'],['Eléctrico','Cables sin protección'],['Biomecánico','Posturas forzadas y levantar cargas'],['Psicosocial','Carga de trabajo excesiva y presión constante'],['Químico','Gases, vapores, líquidos o polvos']],why:'Conocer los factores de riesgo te ayuda a reconocerlos en tu puesto de trabajo.'},
   {type:'quiz',t:18,q:'Jornadas muy cargadas, presión constante y tensión con el equipo.',opts:['Psicosocial','Locativo','Mecánico','Físico'],a:0,why:'Psicosocial: situaciones de la organización del trabajo que generan estrés y afectan el bienestar.'}
  ]},
- {name:'Accidentes y conceptos',tema:'Conceptos SST y accidente de trabajo',blurb:'Clasifica lo que pasa y sabe qué hacer si ocurre un accidente.',mech:'Clasifica, ordena y escribe',repaso:'Los conceptos SST y los pasos en caso de accidente de trabajo',ch:[
-  {type:'sort',t:45,q:'¿Acto inseguro o condición insegura? Clasifica cada situación.',buckets:['Acto inseguro','Condición insegura'],cls:['o3','o2'],items:[['Subir la escalera corriendo',0],['Trabajar sin los elementos de protección',0],['Cargar un objeto muy pesado sin pedir ayuda',0],['Tomacorriente con la tapa rota',1],['Piso mojado sin señalizar',1],['Escalera sin pasamanos',1]],why:'Acto inseguro: lo que hace una persona. Condición insegura: lo que está mal en el entorno o en los equipos.'},
+ {name:'Accidentes y conceptos',tema:'Conceptos SST y accidente de trabajo',blurb:'Clasifica lo que pasa y sabe qué hacer si ocurre un accidente.',mech:'Clasifica, elige y ordena',repaso:'Los conceptos SST y los pasos en caso de accidente de trabajo',ch:[
+  {info:INFO_CONCEPTOS,type:'sort',t:45,q:'¿Acto inseguro o condición insegura? Clasifica cada situación.',buckets:['Acto inseguro','Condición insegura'],cls:['o3','o2'],items:[['Subir la escalera corriendo',0],['Trabajar sin los elementos de protección',0],['Cargar un objeto muy pesado sin pedir ayuda',0],['Tomacorriente con la tapa rota',1],['Piso mojado sin señalizar',1],['Escalera sin pasamanos',1]],why:'Acto inseguro: lo que hace una persona. Condición insegura: lo que está mal en el entorno o en los equipos.'},
   {type:'quiz',t:22,q:'Se te cae una caja pesada a centímetros de los pies, pero nadie resulta herido.',opts:['Incidente de trabajo','Accidente de trabajo','Acto inseguro','Enfermedad laboral'],a:0,why:'Incidente: suceso repentino sin lesiones ni daños. Es un aviso, así que repórtalo. Si hay lesión, es accidente de trabajo.'},
   {type:'order',t:50,q:'Tuviste un accidente de trabajo. Toca los pasos en el orden correcto.',items:['Informa a tu jefe inmediato','Recibe atención en primeros auxilios','Reporta al área de SST','Acude al centro hospitalario más cercano','Si no hay nadie en la institución, llama a la línea ARL Sura'],why:'Primero avisas, te atienden, reportas a SST y, si hace falta, vas al hospital.'},
-  {type:'type',t:40,q:'Si no hay nadie en la institución, ¿a qué número de la línea ARL Sura llamas? Escríbelo.',answers:['6044444578'],shown:'604 444 45 78',hint:'Empieza por 604.',why:'Guárdalo en tu celular: línea ARL Sura 604 444 45 78.'}
  ]},
- {name:'Mito o realidad',tema:'Normas generales y cuidado de la voz',blurb:'Respuestas rápidas sobre tus hábitos diarios.',mech:'Verdadero o falso, completar y escribir',repaso:'Las normas generales de seguridad y el cuidado de la voz',ch:[
+ {name:'Mito o realidad',tema:'Normas generales y cuidado de la voz',blurb:'Respuestas rápidas sobre tus hábitos diarios.',mech:'Verdadero o falso',repaso:'Las normas generales de seguridad y el cuidado de la voz',ch:[
   {type:'tf',t:12,q:'En las escaleras se sube y se baja peldaño por peldaño, por la derecha y con la mano en el pasamanos.',a:true,why:'Camina sin prisa y sin correr.'},
   {type:'tf',t:12,q:'Si una caja pesa mucho, lo mejor es cargarla solo para no molestar.',a:false,why:'Analiza el peso: si excede tus condiciones, usa ayuda mecánica o pide ayuda a tus compañeros.'},
-  {type:'tf',t:12,q:'Si hoy tu salud no te deja trabajar bien, puedes avisarlo a fin de mes.',a:false,why:'Cualquier condición de salud que no te permita trabajar se reporta de manera inmediata.'},
-  {type:'cloze',t:25,q:'Cuida tu voz. Completa la frase con las palabras correctas, en orden.',text:'Caliente la ___ y manténgase ___.',answers:['voz','hidratado'],extra:['gritando','sentado'],why:'Además: evita hablar por encima del ruido ambiental y las bebidas muy calientes o muy frías.'},
-  {type:'type',t:30,q:'Regla 60/10 para tu voz: por cada 60 minutos de charla, ¿cuántos minutos de silencio? Escribe el número.',answers:['10'],shown:'10 minutos',hint:'Es un número de dos cifras.',why:'60 minutos de charla, 10 minutos de silencio.'}
+  {after:INFO_VOZ,type:'tf',t:12,q:'Si hoy tu salud no te deja trabajar bien, puedes avisarlo a fin de mes.',a:false,why:'Cualquier condición de salud que no te permita trabajar se reporta de manera inmediata.'},
  ]},
- {name:'Tu red de apoyo',tema:'Grupos de apoyo y acoso laboral',blurb:'Saber a quién acudir también es seguridad.',mech:'Elige, une casos y completa',repaso:'Los grupos de apoyo (COPASST y Comité de convivencia) y el acoso laboral',ch:[
-  {type:'quiz',t:20,q:'¿Quiénes conforman el Comité Paritario de SST (COPASST)?',opts:['Representantes del empleador y de los empleados','Solo directivos de la universidad','Únicamente la brigada de emergencia','Personal externo contratado'],a:0,why:'Es paritario: ambas partes trabajan juntas por la seguridad y la salud de todos.'},
+ {name:'Tu red de apoyo',tema:'Grupos de apoyo y acoso laboral',blurb:'Saber a quién acudir también es seguridad.',mech:'Elige y completa',repaso:'Los grupos de apoyo (COPASST y Comité de convivencia) y el acoso laboral',ch:[
+  {info:INFO_COMITES,type:'quiz',t:20,q:'¿Quiénes conforman el Comité Paritario de SST (COPASST)?',opts:['Representantes del empleador y de los empleados','Solo directivos de la universidad','Únicamente la brigada de emergencia','Personal externo contratado'],a:0,why:'Es paritario: ambas partes trabajan juntas por la seguridad y la salud de todos.'},
   {type:'quiz',t:22,q:'Un compañero te intimida de forma repetida. ¿A qué grupo de apoyo acudes?',opts:['Comité de convivencia laboral','Brigada de emergencia','COE (Comité de Emergencias)','A ninguno: es mejor callar'],a:0,why:'El Comité de convivencia laboral escucha y atiende los casos de acoso laboral.'},
-  {type:'match',t:50,q:'Une cada modalidad de acoso laboral con el caso que la describe.',pairs:[['Maltrato laboral','Gritos e insultos frente a todo el equipo'],['Entorpecimiento laboral','Le esconden las herramientas y documentos para trabajar'],['Desprotección laboral','Tarea de riesgo sin elementos de protección'],['Discriminación laboral','Trato distinto por origen o creencias']],why:'Reconocer la modalidad te ayuda a pedir apoyo a tiempo.'},
   {type:'cloze',t:25,q:'Completa la definición. Toca las palabras en orden.',text:'El acoso laboral es una conducta ___ y ___.',answers:['persistente','demostrable'],extra:['ocasional','secreta'],why:'Puede venir de un jefe, un compañero o un subalterno, y busca infundir miedo, intimidación o angustia.'}
  ]},
  {name:'¡Emergencia!',tema:'Plan de emergencias',blurb:'La última ronda: lo que haces cuando cuenta cada segundo.',mech:'Cinco retos de todo tipo',repaso:'El plan de emergencias, los recursos y los puntos de encuentro',ch:[
@@ -390,7 +399,7 @@ $('#snd').addEventListener('click',toggleSnd);$('#snd2').addEventListener('click
 var S=null;
 function newGame(name,calm){
   S={name:name,calm:calm,log:[],pick:undefined,g:0,score:0,streak:0,bestStreak:0,ok:0,saved:'',
-     byRound:ROUNDS.map(function(){return {ok:0,n:0,pts:0};})};
+     byRound:ROUNDS.map(function(){return {ok:0,n:0,pts:0};}),seen:{}};
 }
 function hud(show){
   var h=$('#hud'); h.hidden=!show; $('#topbar').hidden=show;
@@ -581,15 +590,30 @@ function mountReveal(html,ok){
   nx.focus({preventScroll:true});
 }
 function nextStep(){
-  var prevRi=FLAT[S.g].ri;
+  var cur=FLAT[S.g];
+  if(cur.after&&!S.seen[S.g+'a']){S.seen[S.g+'a']=1;return showInfo(cur.after,nextStep);}
+  var prevRi=cur.ri;
   S.g++;
   if(S.g>=TOTAL)return endGame();
   if(FLAT[S.g].ri!==prevRi)pushResults(false);
   if(FLAT[S.g].ci===0)roundIntro();else showChallenge();
 }
 
+function showInfo(info,cont){
+  stopTimer();hud(true);toTop();
+  var items=info.items.map(function(it){return '<div class="info-item">'+(it[0]?'<b>'+esc(it[0])+'</b>':'')+'<p>'+esc(it[1])+'</p></div>';}).join('');
+  stage.innerHTML='<section class="info"><p class="info-k">Para tener en cuenta</p><h2 class="q">'+esc(info.title)+'</h2>'+
+    '<div class="info-list">'+items+'</div>'+
+    (info.note?'<div class="info-note"><b>'+esc(info.note[0])+'</b><p>'+esc(info.note[1])+'</p></div>':'')+
+    '<button class="btn big" id="infogo" type="button">Continuar</button></section>';
+  var b=document.getElementById('infogo');
+  b.addEventListener('click',function(){sfx.tick();cont();});
+  b.focus({preventScroll:true});
+}
+
 function showChallenge(){
   stopTimer();var c=FLAT[S.g];hud(true);toTop();
+  if(c.info&&!S.seen[S.g+'b']){S.seen[S.g+'b']=1;return showInfo(c.info,showChallenge);}
   if(c.type==='order')return showOrder(c);
   if(c.type==='sort')return showSort(c);
   if(c.type==='match')return showMatch(c);

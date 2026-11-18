@@ -1,8 +1,8 @@
 # Guardianes de la Vida
 
 Juego interactivo para repasar la inducción en Seguridad y Salud en el Trabajo (SG-SST).
-24 retos en 6 rondas: encontrar peligros en una imagen, unir pares, clasificar, ordenar,
-completar frases, escribir la respuesta y preguntas de selección. Suma puntos por velocidad y rachas.
+20 retos en 6 rondas, con piezas informativas de repaso: encontrar peligros en una imagen, unir pares, clasificar, ordenar,
+completar frases y preguntas de selección. Suma puntos por velocidad y rachas.
 
 ## Cómo usarlo
 
