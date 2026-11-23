@@ -273,6 +273,9 @@ button{font:inherit;color:inherit}
 .info-note{background:var(--a2);color:var(--a2t);border-radius:16px;padding:16px 18px;margin:0 0 24px}
 .info-note b{display:block;font-size:1.1rem;margin-bottom:4px}
 .info-note p{margin:0}
+.gallery{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 0 10px;margin:14px 0}
+.gallery a{flex:0 0 min(44%,210px);scroll-snap-align:start}
+.gallery img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -329,7 +332,7 @@ var ROUNDS=[
   {type:'quiz',t:18,q:'Suena una sirena continua. ¿Qué significa?',opts:['Alarma: hay que evacuar','Alerta: prepararse para actuar','Nada: es una prueba de sonido','Cambio de turno'],a:0,why:'Alerta es un sonido intermitente: algo pasa y nos preparamos. Alarma es la sirena continua: se evacua.'},
   {type:'match',t:50,q:'Une cada recurso de emergencia con el momento en que lo usas.',pairs:[['Desfibrilador (DEA)','Una persona se desmaya y no respira'],['Extintor','Un fuego pequeño que apenas empieza'],['Kit antiderrames','Se derrama un líquido en el piso'],['Camilla','Alguien se lesiona y no puede caminar'],['Botiquín','Una herida leve que requiere curación']],why:'Ubica estos recursos en tu sede. Si los necesitas, avisa de inmediato a la brigada de emergencia.'},
   {type:'sort',t:45,q:'En una emergencia, ¿qué sí y qué no? Clasifica cada acción.',buckets:['Sí, hazlo','No lo hagas'],cls:['o1','o4'],items:[['Conservar la calma',0],['Ayudar a personas con movilidad reducida',0],['Ir al punto de encuentro más cercano',0],['Volver por tus pertenencias',1],['Correr y empujar a los demás',1],['Quedarte a terminar tu trabajo',1]],why:'Camina sin prisa, ayuda a quien lo necesite y sigue las indicaciones del COE y las brigadas.'},
-  {type:'quiz',t:20,q:'¿Cuál de estos lugares es un punto de encuentro de la UCO?',opts:['Bloque M','El ascensor','Tu oficina','Un salón con la puerta cerrada'],a:0,why:'Los puntos son: Bloque M, Innovamáter, Edificio de la Ciencia, Bloque J, Consultorio Jurídico y Colegio Sede SJP II.'},
+  {type:'quiz',t:20,q:'¿Cuál de estos lugares es un punto de encuentro de la UCO?',opts:['Bloque M','El ascensor','Tu oficina','Un salón con la puerta cerrada'],a:0,why:'Los puntos son: Bloque M, Innovamáter, Edificio de la Ciencia, Bloque J, Consultorio Jurídico y Colegio Sede SJP II.',gallery:[['assets/puntos/bloque-m.jpg','Bloque M'],['assets/puntos/edificio-innovamater.jpg','Edificio Innovamáter'],['assets/puntos/edificio-de-la-ciencia.jpg','Edificio de la Ciencia'],['assets/puntos/bloque-j.jpg','Bloque J'],['assets/puntos/centro-juridico.jpg','Centro Jurídico'],['assets/puntos/sede-san-juan-pablo-ii.jpg','Sede San Juan Pablo II']]},
   {type:'order',t:40,q:'Hay una emergencia. Toca los pasos del plan de evacuación en orden.',items:['Activa el pulsador solo si hay una emergencia','Identifica la salida de emergencia','Sigue la ruta de evacuación','Ubica el punto de encuentro'],why:'Pulsador, salida de emergencia, ruta de evacuación y punto de encuentro.'}
  ]}
 ];
@@ -579,6 +582,7 @@ function revealHTML(c,ok,res,timeout,answerLine){
     (res.sb?'<p class="bonus">Incluye +'+res.sb+' por racha</p>':'')+
     (answerLine?'<p class="answer-line">'+answerLine+'</p>':'')+
     '<p class="why">'+esc(c.why)+'</p>'+
+    (c.gallery?'<div class="gallery" aria-label="Puntos de encuentro de la UCO">'+c.gallery.map(function(g){return '<a href="'+g[0]+'" target="_blank" rel="noopener"><img src="'+g[0]+'" width="900" height="1273" loading="lazy" alt="Punto de encuentro: '+esc(g[1])+'"></a>';}).join('')+'</div>':'')+
     '<button class="btn" id="next" type="button">'+(last?'Ver mi resultado':newRound?'Siguiente ronda':'Siguiente')+'</button></div>';
 }
 function mountReveal(html,ok){
