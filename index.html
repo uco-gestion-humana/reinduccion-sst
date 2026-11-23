@@ -273,7 +273,8 @@ button{font:inherit;color:inherit}
 .info-note{background:var(--a2);color:var(--a2t);border-radius:16px;padding:16px 18px;margin:0 0 24px}
 .info-note b{display:block;font-size:1.1rem;margin-bottom:4px}
 .info-note p{margin:0}
-.gallery{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 0 10px;margin:14px 0}
+.gal-k{font-weight:700;margin:14px 0 0}
+.gallery{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 0 10px;margin:8px 0 14px}
 .gallery a{flex:0 0 min(44%,210px);scroll-snap-align:start}
 .gallery img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line)}
 </style>
@@ -582,7 +583,7 @@ function revealHTML(c,ok,res,timeout,answerLine){
     (res.sb?'<p class="bonus">Incluye +'+res.sb+' por racha</p>':'')+
     (answerLine?'<p class="answer-line">'+answerLine+'</p>':'')+
     '<p class="why">'+esc(c.why)+'</p>'+
-    (c.gallery?'<div class="gallery" aria-label="Puntos de encuentro de la UCO">'+c.gallery.map(function(g){return '<a href="'+g[0]+'" target="_blank" rel="noopener"><img src="'+g[0]+'" width="900" height="1273" loading="lazy" alt="Punto de encuentro: '+esc(g[1])+'"></a>';}).join('')+'</div>':'')+
+    (c.gallery?'<p class="gal-k">Allí encontrarás los puntos señalizados de esta manera:</p><div class="gallery" aria-label="Puntos de encuentro de la UCO">'+c.gallery.map(function(g){return '<a href="'+g[0]+'" target="_blank" rel="noopener"><img src="'+g[0]+'" width="900" height="1273" loading="lazy" alt="Punto de encuentro: '+esc(g[1])+'"></a>';}).join('')+'</div>':'')+
     '<button class="btn" id="next" type="button">'+(last?'Ver mi resultado':newRound?'Siguiente ronda':'Siguiente')+'</button></div>';
 }
 function mountReveal(html,ok){
