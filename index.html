@@ -181,6 +181,7 @@ button{font:inherit;color:inherit}
 .rrow .rf{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
 .review{font-weight:600;padding:12px 16px;border-radius:14px;background:var(--surface);border-left:6px solid var(--a2)}
 .eval{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:24px;align-items:center;background:var(--surface);border-radius:24px;padding:24px clamp(16px,3vw,30px);box-shadow:0 6px 24px var(--shadow)}
+.eval .form-link{display:inline-block;margin-top:12px;font-weight:700;color:var(--a1);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 .eval h3{font-size:1.7rem;margin-bottom:8px}
 .eval img{width:100%;height:auto;border-radius:14px;display:block;background:#fff}
 .adminbar{margin-top:20px;display:flex;justify-content:flex-end}
@@ -297,7 +298,8 @@ button{font:inherit;color:inherit}
 (function(){
 'use strict';
 var IMG_BIRD='assets/bird.jpg';
-var IMG_QR='assets/qr.png';  /* Ruta de la imagen del QR para la pantalla final, por ejemplo 'assets/qr.png'. Vacío = muestra el recuadro reservado. */
+var IMG_QR='assets/qr.png';
+var FORM_URL='https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=UVxaN6hcmkC-aVuuOMc2XOPB2fGq3EFEkoxDcZif251UQTlTSUtTMzNNOVpMTEVVR01JMUpVV1BBNy4u';  /* Ruta de la imagen del QR para la pantalla final, por ejemplo 'assets/qr.png'. Vacío = muestra el recuadro reservado. */
 
 /* ---------- Piezas informativas (no suman puntos) ---------- */
 var INFO_CONCEPTOS={"title": "Antes de clasificar: conceptos clave", "items": [["Peligro", "Es una fuente o situación con potencial de daño en términos de lesión o enfermedad, daño a la propiedad, al ambiente de trabajo o una combinación de estos."], ["Riesgo", "Combinación de la probabilidad de que ocurra un evento o exposición peligrosa."], ["Acto inseguro", "Acciones y decisiones humanas que pueden causar una situación insegura o incidente, con consecuencias para el trabajador, la producción, el medio ambiente y otras personas. También el comportamiento inseguro incluye la falta de acciones para informar o corregir condiciones inseguras."], ["Condición insegura", "Es todo elemento de los equipos, la materia prima, las herramientas, las máquinas, las instalaciones o el medio ambiente que se convierte en un peligro para las personas, los bienes, la operación y el medio ambiente, y que bajo determinadas condiciones puede generar un incidente."], ["Accidente de trabajo", "Suceso repentino que sobrevenga por causa o con ocasión del trabajo, y que produzca en el trabajador una lesión orgánica, una perturbación funcional o psiquiátrica, una invalidez o la muerte."], ["Incidente de trabajo", "Suceso acaecido en el curso del trabajo o en relación con este, que tuvo el potencial de ser un accidente, en el que hubo personas involucradas sin que sufrieran lesiones o se presentaran daños a la propiedad y/o pérdida en los procesos."]], "note": ["Línea de ARL Sura para el reporte de accidentes de trabajo: 604 444 4578", "Reporta inmediatamente cualquier accidente de trabajo a tu jefe inmediato y al equipo de Seguridad y Salud en el Trabajo. Recuerda que existe un plazo máximo de dos (2) días hábiles para efectuar el reporte ante la ARL SURA."]};
@@ -525,7 +527,7 @@ function showIntro(){
     '<div><svg viewBox="0 0 24 24" aria-hidden="true" style="fill:var(--a3)"><path d="M12 2c3 4 6 6.500 6 11a6 6 0 0 1-12 0c0-2 1-3.500 2-5 .5 2 1.500 3 2.500 3C11 8 10 5 12 2z"/></svg><p><b>Mantén la racha</b><span>Desde el segundo acierto seguido ganas puntos extra.</span></p></div>'+
     '<div><svg viewBox="0 0 24 24" aria-hidden="true" style="fill:var(--a1)"><path d="M12 3 2 8l10 5 8-4v6h2V8zM6 13.200V17c0 1.700 2.700 3 6 3s6-1.300 6-3v-3.800l-6 3z"/></svg><p><b>Aprende en cada reto</b><span>Después de responder verás el dato que conviene recordar.</span></p></div>'+
   '</div>'+
-  '<section class="rank-card" aria-labelledby="rkt"><h2 id="rkt">Ranking</h2><div id="rank"></div></section><div id="adminbar" class="adminbar"></div>';
+  '<div id="adminbar" class="adminbar"></div>';
   paintRank();paintAdmin();
   document.getElementById('f').addEventListener('submit',function(e){
     e.preventDefault();
@@ -947,21 +949,11 @@ function endGame(){
           pct>=.7?['Brigadista UCO','Sabes muy bien cómo actuar. Repasa lo que se te escapó y ya estás listo.']:
           pct>=.5?['Vigía en formación','Vas por buen camino. Revisa los temas marcados abajo y vuelve a jugar.']:
                   ['Semilla de seguridad','Todo gran equipo empieza aprendiendo. Repasa los temas marcados y juega otra vez.'];
-  var weakest=-1,wr=2;
-  S.byRound.forEach(function(r,i){var q=r.n?r.ok/r.n:1;if(q<wr){wr=q;weakest=i;}});
-  var rows=ROUNDS.map(function(r,i){
-    var b=S.byRound[i],p=b.n?b.ok/b.n*100:0;
-    return '<div class="rrow"><span class="rn">'+esc(r.name)+'</span><div class="rbar"><i style="width:'+p+'%;background:var(--a'+(i%4+1)+')"></i></div><span class="rf">'+b.ok+'/'+r.ch.length+'</span></div>';
-  }).join('');
-  var review=wr<1?'<p class="review">¡Ninguna ronda se te escapó! Tienes todo bien aprendido.</p>':
-    '<p class="review">Para repasar: '+esc(ROUNDS[weakest].repaso)+'.</p>';
   stage.innerHTML=
   '<section class="end">'+
     '<div class="end-top"><span class="lvl">Tu nivel</span><h2>'+esc(lvl[0])+'</h2><div class="big-score" id="bs">0</div><p class="msg">'+esc(lvl[1])+'</p><p class="best" id="savemsg" aria-live="polite"></p></div>'+
     '<div class="stats"><div class="stat"><b>'+S.ok+'/'+TOTAL+'</b><span>Aciertos</span></div><div class="stat"><b>×'+S.bestStreak+'</b><span>Mejor racha</span></div><div class="stat"><b>'+Math.round(pct*100)+'%</b><span>Precisión</span></div></div>'+
-    '<div class="rounds"><h3>Cómo te fue por ronda</h3>'+rows+review+'</div>'+
-    '<div class="eval"><div><h3>Último paso</h3><p>Escanea el código con tu celular para continuar.</p></div>'+(IMG_QR?'<img src="'+IMG_QR+'" width="200" height="200" alt="Código QR para el registro de asistencia, evaluación y rendición de cuentas de la Reinducción SG-SST 2026">':'<div class="qr-ph" role="img" aria-label="Espacio reservado para un código QR"><span>Aquí irá el código QR</span></div>')+'</div>'+
-    '<section class="rank-card" aria-labelledby="rkt2"><h2 id="rkt2">Ranking</h2><div id="rank"></div></section>'+
+    '<div class="eval"><div><h3>Último paso</h3><p>Ingresa al siguiente enlace o QR para completar y validar tu conocimiento de la inducción de seguridad y salud en el trabajo.</p><a class="form-link" href="'+FORM_URL+'" target="_blank" rel="noopener">Rellenar | Reinducción SG-SST 2026: Registro de Asistencia, Evaluación y Rendición de Cuentas</a></div>'+(IMG_QR?'<a href="'+FORM_URL+'" target="_blank" rel="noopener"><img src="'+IMG_QR+'" width="200" height="200" alt="Código QR para el registro de asistencia, evaluación y rendición de cuentas de la Reinducción SG-SST 2026"></a>':'<div class="qr-ph" role="img" aria-label="Espacio reservado para un código QR"><span>Aquí irá el código QR</span></div>')+'</div>'+
     '<div class="end-actions"><button class="btn big" id="again" type="button">Jugar de nuevo</button><button class="btn ghost" id="home" type="button">Volver al inicio</button></div>'+
   '</section>';
   document.getElementById('again').addEventListener('click',function(){newGame(S.name,S.calm);roundIntro();});
